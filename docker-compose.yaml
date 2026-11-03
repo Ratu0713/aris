@@ -1,0 +1,30 @@
+version: '3.6'
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: dockerfile_backend
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:5000"
+    networks:
+      - ares-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: dockerfile_frontend
+    volumes:
+      - ./frontend:/app
+    environment:
+      - BACKEND_URL= http://backend:5000/api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - ares-network
+
+networks:
+  ares-network: {}
